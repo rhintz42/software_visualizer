@@ -44,8 +44,13 @@ node-inspector &
 
 Start your app in debug mode
 ```bash
-nodemon --debug ./bin/www       #Can just do npm start in this project
+nodemon --debug ./bin/www
 ```
+or
+```bash
+npm start       # I've added this to package.json as an option
+```
+
 
 Open up Browser with Debug console:
 `localhost:8080/debug?port=5858`
