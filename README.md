@@ -10,6 +10,8 @@ Installation
 Extra Requirements Need to Install:
 * MongoDB
 
+###Creating the Environment
+
 Create a node environment so when installing you don't have to worry about the
 packages on your entire computer. (If you don't have nodeenv, install it first)
 ```bash
