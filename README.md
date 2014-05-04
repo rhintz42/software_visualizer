@@ -34,6 +34,14 @@ cd software_visualizer
 npm-install
 ```
 
+Running the App
+---------------
+Can start the app with this command: `npm start`
+
+All this is is a command defined in `package.json` that calls this command: `nodemon --debug ./bin/www`
+
+To not use `nodemon`, you can start up the server with this command: `node ./bin/www`
+
 
 Running in Debug Mode
 ----------------------
@@ -52,10 +60,8 @@ npm start       # I've added this to package.json as an option
 ```
 
 
-Open up Browser with Debug console:
-`localhost:8080/debug?port=5858`
+Open up Browser with Debug console: `localhost:8080/debug?port=5858`
 
-Open up Browser to your app
-`0.0.0.0:3000/`
+Open up Browser to your app: `0.0.0.0:3000/`
 
 Profit
