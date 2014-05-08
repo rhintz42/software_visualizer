@@ -3,22 +3,28 @@ var RepositoryView = Backbone.View.extend({
 
 	template: _.template($('#item-template').html()),
 
+	//el: this.$el,
+
 	events: {
-		"click .toggle" 	: "toggleDone",
-		"dblclick .view"	: "edit",
-		"click a.destroy"	: "clear",
-		"keypress .edit"	: "updateOnEnter",
-		"blur .edit"		: "close"
+		//"click .thing"		: "edit"
+		"click p"			: "edit"
+		//"click .toggle" 	: "toggleDone",
+		//"dblclick .view"	: "edit",
+		//"click a.destroy"	: "clear",
+		//"keypress .edit"	: "updateOnEnter",
+		//"blur .edit"		: "close"
 	},
 
 	initialize: function() {
 		this.listenTo(this.model, 'change', this.render);
 		this.listenTo(this.model, 'destroy', this.remove);
+		//this.delegateEvents();
 	},
 
 	render: function() {
 		this.$el.html(this.template(this.model.toJSON()));
 		this.$el.toggleClass('done', this.model.get('done'));
+		//this.$el.toggleClass('cool', this.model.get('cool'));
 		this.input = this.$('.edit');
 		return this;
 	},
@@ -28,7 +34,9 @@ var RepositoryView = Backbone.View.extend({
 	},
 
 	edit: function() {
-		this.$el.addClass("editing");
+		//alert("Cool");
+		//this.$el.addClass("editing");
+		this.$el.toggleClass("editing", this.model.get('editing'));
 		this.input.focus();
 	},
 

@@ -1,11 +1,7 @@
-var Repository = Backbone.Model.extend();
-
 var RepositoryList = Backbone.Collection.extend({
 	model: Repository,
 	
 	url: '/repositories',
-
-	//localStorage: new Backbone.LocalStorage("repository-backbone"),
 
 	done: function() {
 		return this.where({done: true});
@@ -24,3 +20,4 @@ var RepositoryList = Backbone.Collection.extend({
 });
 
 var Repositories = new RepositoryList;
+

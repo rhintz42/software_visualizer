@@ -4,10 +4,14 @@ block content
     h1= title
     p Welcome to #{title}	
     #repositoryapp
+        #repository-list
     #item-template
-        p Hello
+        .thing
+            p cool
     #stats-template
-    script(src="/javascript/repository_model.js")
-    script(src="/javascript/repository_collection.js")
-    script(src="/javascript/repository_view.js")
-    script(src="/javascript/app_view.js")
+    #new-repository
+        p Nice!
+    script(src="/javascript/models/repositories.js")
+    script(src="/javascript/collections/repositories.js")
+    script(src="/javascript/views/repositories.js")
+    script(src="/javascript/views/app.js")
