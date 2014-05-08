@@ -8,7 +8,7 @@ Installation
 ------------
 
 Extra Requirements Need to Install:
-* MongoDB
+* MongoDB: http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
 
 ###Creating the Environment
 
@@ -33,7 +33,7 @@ git clone https://github.com/rhintz42/software_visualizer.git
 Go into the new folder and install all the required packages
 ```bash
 cd software_visualizer
-npm-install
+npm-install -g
 ```
 
 Running the App

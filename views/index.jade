@@ -1,5 +1,13 @@
 extends layout
 
 block content
-	h1= title
-	p Welcome to #{title}	
+    h1= title
+    p Welcome to #{title}	
+    #repositoryapp
+    #item-template
+        p Hello
+    #stats-template
+    script(src="/javascript/repository_model.js")
+    script(src="/javascript/repository_collection.js")
+    script(src="/javascript/repository_view.js")
+    script(src="/javascript/app_view.js")
