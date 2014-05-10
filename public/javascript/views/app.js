@@ -12,7 +12,8 @@ $(function() {
 			this.listenTo(Repositories, 'reset', this.addAll);
 			this.listenTo(Repositories, 'all', this.render);
 
-			Repositories.fetch();
+			this.render();
+			//Repositories.fetch();
 		},
 
 		render: function() {
@@ -33,41 +34,80 @@ $(function() {
 			  .append("g")
 			    .attr("transform", "translate(40,0)");
 
+			// Create root element
 			var root = {
+				name: 'outer',
 				children: [
 					{
-						children: [], 
-						name: "inner"
+						name: "inner",
+						children: [{
+							name: "innerinner",
+							children: []
+						}] 
+					},
+					{
+						name: "inner2",
+						children: [] 
 					}
-				], 
-				name: 'outer'
+				] 
 			};
 
-			//d3.json("/json/func.json", function(error, root) {
+			// Create array of nodes from root
 			var nodes = tree.nodes(root),
 			    links = tree.links(nodes);
 
+			// Create all elements of the ".link" class
 			var link = svg.selectAll(".link")
 			    .data(links)
 			  .enter().append("path")
 			    .attr("class", "link")
 			    .attr("d", diagonal);
 
-			var node = svg.selectAll(".node")
-			  .data(nodes)
+			var dragListener = d3.behavior.drag()
+				.on("dragstart", function(d) {
+					dragStarted = true;
+					nodes = tree.nodes(d);
+					d3.event.sourceEvent.stopPropagation();
+					// it's important that we suppress the mouseover event on the node being dragged. Otherwise it will absorb the mouseover event and the underlying node will not detect it d3.select(this).attr('pointer-events', 'none');
+				})
+				.on("drag", function(d) {
+					if (dragStarted) {
+						domNode = this;
+						d.x0 = d3.event.x;
+						d.y0 = d3.event.y;
+					}
+					dragStarted = false;
+
+					d.x0 += d3.event.dx;
+					d.y0 += d3.event.dy;
+
+					var node = d3.select(this);
+					node.attr("transform", "translate(" + d.x0 + "," + d.y0 + ")");
+				})
+				.on("dragend", function(d) {
+					
+				});
+
+			// Get all elements with ".node" class
+			var svgNodes = svg.selectAll(".node")
+			  	.data(nodes)
 			  .enter().append("g")
+			    .call(dragListener)
 			    .attr("class", "node")
 			    .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
 
-			node.append("circle")
+			// Add "circle" element onto each node object
+			svgNodes.append("circle")
 			    .attr("r", 4.5);
 
-			node.append("text")
+			// Add "text" element onto each node object
+			svgNodes.append("text")
 			    .attr("dx", function(d) { return d.children ? -8 : 8; })
 			    .attr("dy", 3)
 			    .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
 			    .text(function(d) { return d.name; });
 
+			// Add "height" onto this frameElements
 			d3.select(self.frameElement).style("height", height + "px");
 
 			return this;
@@ -85,7 +125,7 @@ $(function() {
 		createOnEnter: function(e) {
 	      	Repositories.create({
 	      		name: { first: "wowie!", last: 'Montoya' }, 
-	      		email: "asdf@slkdjf.com"
+	      		//email: "asdf@slkdjf.com"
 	      	});
 	    }
 	});
