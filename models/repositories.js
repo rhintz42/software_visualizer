@@ -8,6 +8,7 @@ var Repository = new Schema({
         first:  { type: String },
         last:   { type: String }
     },  
+    email:      { type: String },
     phone:      { type: String },
     gravatar:   { type: String }
 });

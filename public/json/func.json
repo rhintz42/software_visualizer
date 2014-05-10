@@ -1,0 +1,51 @@
+{
+ "name": "flare",
+ "children": [
+  {
+   "name": "analytics",
+   "children": [
+   ]
+  },
+  {
+   "name": "animate",
+   "children": [
+   ]
+  },
+  {
+   "name": "data",
+   "children": [
+   ]
+  },
+  {
+   "name": "display",
+   "children": [
+   ]
+  },
+  {
+   "name": "flex",
+   "children": [
+    {"name": "FlareVis", "size": 50}
+   ]
+  },
+  {
+   "name": "physics",
+   "children": [
+   ]
+  },
+  {
+   "name": "query",
+   "children": [
+   ]
+  },
+  {
+   "name": "scale",
+   "children": [
+   ]
+  },
+  {
+   "name": "util",
+   "children": [
+   ]
+  }
+ ]
+}

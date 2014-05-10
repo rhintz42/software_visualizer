@@ -4,13 +4,47 @@ block content
     h1= title
     p Welcome to #{title}	
     #repositoryapp
+        #proflib-visualizer-container
+        #new-repository
+            p Nice!
         #repository-list
-    #item-template
-        .thing
-            p cool
-    #stats-template
-    #new-repository
-        p Nice!
+    #item-template2
+        .node2
+            .name
+            .id
+            .email
+            .change-name
+                <input type=text />
+            .repository
+            .destroy
+                p destroy
+            .edit
+                p edit
+    | <script id="item-template" type="text/plain">
+    |     <div class="node">
+    |          <div class="name">
+    |             <%=name.first%> <%=name.last%>
+    |          </div>
+    |          <div class="email">
+    |             <%=email%>
+    |          </div>
+    |          <div class="edit">
+    |             <p>edit</p>
+    |          </div>
+    |          <div class="destroy">
+    |             <p>destroy</p>
+    |          </div>
+    |          <div class="add-folder">
+    |             <p>add-folder</p>
+    |          </div>
+    |          <div class="folder-list">
+    |          </div>
+    |     </div>
+    | </script>
+    #node-description-container
+    script(src="/javascript/models/folders.js")
+    script(src="/javascript/collections/folders.js")
+    script(src="/javascript/views/folders.js")
     script(src="/javascript/models/repositories.js")
     script(src="/javascript/collections/repositories.js")
     script(src="/javascript/views/repositories.js")

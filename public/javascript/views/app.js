@@ -3,41 +3,74 @@ $(function() {
 	var AppView = Backbone.View.extend({
 		el: $("#repositoryapp"),
 
-		statsTemplate: _.template($('#stats-template').html()),
-
 		events: {
-			"keypress #new-repository": "createOnEnter",
-			"click #clear-completed": "clearCompleted",
-			"click #toggle-all": "toggleAllComplete"
+			"click #new-repository": "createOnEnter"
 		},
 
 		initialize: function() {
-			this.input = this.$("#new-repository");
-			//this.allCheckbox = this.$("#toggle-all")[0];
-
 			this.listenTo(Repositories, 'add', this.addOne);
 			this.listenTo(Repositories, 'reset', this.addAll);
 			this.listenTo(Repositories, 'all', this.render);
-
-			this.footer = this.$('footer');
-			this.main = $('#main');
 
 			Repositories.fetch();
 		},
 
 		render: function() {
-			var done = Repositories.done().length;
-		    var remaining = Repositories.remaining().length;
+			this.$el.html("<div></div>");
 
-		    if (Repositories.length) {
-		        this.main.show();
-		        this.footer.show();
-		        this.footer.html(this.statsTemplate({done: done, remaining: remaining}));
-		    } else {
-		        this.main.hide();
-		        this.footer.hide();
-		    }
+			var width = 760,
+			    height = 200;
 
+			var tree = d3.layout.tree()
+			    .size([height, width - 160]);
+
+			var diagonal = d3.svg.diagonal()
+			    .projection(function(d) { return [d.y, d.x]; });
+
+			var svg = d3.select(this.el).append("svg")
+			    .attr("width", width)
+			    .attr("height", height)
+			  .append("g")
+			    .attr("transform", "translate(40,0)");
+
+			var root = {
+				children: [
+					{
+						children: [], 
+						name: "inner"
+					}
+				], 
+				name: 'outer'
+			};
+
+			//d3.json("/json/func.json", function(error, root) {
+			var nodes = tree.nodes(root),
+			    links = tree.links(nodes);
+
+			var link = svg.selectAll(".link")
+			    .data(links)
+			  .enter().append("path")
+			    .attr("class", "link")
+			    .attr("d", diagonal);
+
+			var node = svg.selectAll(".node")
+			  .data(nodes)
+			  .enter().append("g")
+			    .attr("class", "node")
+			    .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+
+			node.append("circle")
+			    .attr("r", 4.5);
+
+			node.append("text")
+			    .attr("dx", function(d) { return d.children ? -8 : 8; })
+			    .attr("dy", 3)
+			    .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
+			    .text(function(d) { return d.name; });
+
+			d3.select(self.frameElement).style("height", height + "px");
+
+			return this;
 		},
 
 		addOne: function(repository) {
@@ -50,22 +83,11 @@ $(function() {
 		},
 
 		createOnEnter: function(e) {
-	      	if (e.keyCode != 13) return;
-	      	if (!this.input.val()) return;
-
-	      	Repositories.create({title: this.input.val()});
-	      	this.input.val('');
-	    },
-
-	    clearCompleted: function() {
-	  		_.invoke(Repositories.done(), 'destroy');
-	  		return false;
-		},
-
-		toggleAllComplete: function () {
-	  		var done = this.allCheckbox.checked;
-	  		Repositories.each(function (repository) { repository.save({'done': done}); });
-		}
+	      	Repositories.create({
+	      		name: { first: "wowie!", last: 'Montoya' }, 
+	      		email: "asdf@slkdjf.com"
+	      	});
+	    }
 	});
 
 	var App = new AppView;

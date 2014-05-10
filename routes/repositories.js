@@ -2,9 +2,9 @@ var express = require('express');
 var repositories_model = require('../models/repositories');
 var router = express.Router();
 
-/* GET respositories listing. */
-router.get('/add', function(req, res) {
-	var repository = new repositories_model.Repository({email: "roberth@surveymonkey.com"});
+/* POST respositories listing. */
+router.post('/', function(req, res) {
+	var repository = new repositories_model.Repository(req.body);
 	repository.save(function (err) {
 		if (err)
 			res.send("Shit");
@@ -12,18 +12,17 @@ router.get('/add', function(req, res) {
 	});
 });
 
-/* GET respositories listing. */
-router.get('/:id/edit', function(req, res) {
+/* PUT respositories listing. */
+router.put('/:id', function(req, res) {
 	repositories_model.Repository.find({_id: req.params.id}, function(err, data) {
 		if (err) {
 			res.send(err);
 		}
-
-		data[0].name = "Robdawg";
+		data[0].email = req.body.email;
 		data[0].save(function (err) {
 			if (err)
 				res.send("Shit3");
-			res.redirect("/repositories/"+ data[0]._id);
+			res.json(data[0]);
 		})
 	});
 });
@@ -35,6 +34,16 @@ router.get('/:id', function(req, res) {
 			res.send(err);
 		}
 		res.json(data);
+	})
+});
+
+/* DELETE respositories listing. */
+router.delete('/:id', function(req, res) {
+	repositories_model.Repository.find({_id: req.params.id}).remove(function(err, data) {
+		if (err) {
+			res.send(err);
+		}
+		res.json("Success");
 	})
 });
 

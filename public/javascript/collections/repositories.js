@@ -1,22 +1,17 @@
 var RepositoryList = Backbone.Collection.extend({
 	model: Repository,
 	
-	url: '/repositories',
+	url: function() {
+		var extra;
 
-	done: function() {
-		return this.where({done: true});
-	},
+		if(this.id) {
+			extra = encodeURIComponent(this.id);
+		} else {
+			extra = '';
+		}
 
-	remaining: function() {
-		return this.where({done: false});
-	},
-
-	nextOrder: function() {
-		if(!this.length) return 1;
-		return this.last().get('order') + 1;
-	},
-
-	comparator: 'order'
+		return '/repositories/' + extra;
+    }
 });
 
 var Repositories = new RepositoryList;
