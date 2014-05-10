@@ -13,6 +13,8 @@ var RepositoryView = Backbone.View.extend({
 
 	initialize: function() {	
 		this.model.set('id', this.model.get('_id'));
+		this.model.set('email', this.model.get('email') || '')
+		this.model.set('name', this.model.get('name') || {'first_name': '', 'last_name': ''})
 
 		this.folders = new FolderList;
 		this.folders.repository_id = this.model.get('_id');

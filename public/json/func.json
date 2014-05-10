@@ -24,7 +24,10 @@
   {
    "name": "flex",
    "children": [
-    {"name": "FlareVis", "size": 50}
+    {
+      "name": "FlareVis",
+      "size": 50
+    }
    ]
   },
   {
