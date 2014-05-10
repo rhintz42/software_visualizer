@@ -63,36 +63,10 @@ $(function() {
 			    .attr("class", "link")
 			    .attr("d", diagonal);
 
-			var dragListener = d3.behavior.drag()
-				.on("dragstart", function(d) {
-					dragStarted = true;
-					nodes = tree.nodes(d);
-					d3.event.sourceEvent.stopPropagation();
-					// it's important that we suppress the mouseover event on the node being dragged. Otherwise it will absorb the mouseover event and the underlying node will not detect it d3.select(this).attr('pointer-events', 'none');
-				})
-				.on("drag", function(d) {
-					if (dragStarted) {
-						domNode = this;
-						d.x0 = d3.event.x;
-						d.y0 = d3.event.y;
-					}
-					dragStarted = false;
-
-					d.x0 += d3.event.dx;
-					d.y0 += d3.event.dy;
-
-					var node = d3.select(this);
-					node.attr("transform", "translate(" + d.x0 + "," + d.y0 + ")");
-				})
-				.on("dragend", function(d) {
-					
-				});
-
 			// Get all elements with ".node" class
 			var svgNodes = svg.selectAll(".node")
 			  	.data(nodes)
 			  .enter().append("g")
-			    .call(dragListener)
 			    .attr("class", "node")
 			    .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
 
