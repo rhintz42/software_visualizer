@@ -12,23 +12,15 @@ var RepositoryView = Backbone.View.extend({
 	},
 
 	initialize: function() {	
-		this.model.set('id', this.model.get('_id'));
-		this.model.set('email', this.model.get('email') || '')
-		this.model.set('name', this.model.get('name') || {'first_name': '', 'last_name': ''})
+		this._initializeListeners();
 
-		this.folders = new FolderList;
-		this.folders.repository_id = this.model.get('_id');
-
-		this.listenTo(this.folders, 'add', this.addFolder);
-
-		this.listenTo(this.model, 'change', this.render);
-		this.listenTo(this.model, 'destroy', this.remove);
-		this.folderList = [];
+		// Call this using async:false to make sure all folders are loaded
+		//	before doing anything else
+		this.model.folders.fetch({async:false});
 	},
 
 	render: function() {
 		this.$el.html(this.template(this.model.attributes));
-		this.folders.fetch();
 	    return this;
 	},
 
@@ -37,33 +29,54 @@ var RepositoryView = Backbone.View.extend({
 		this.model.save();
 	},
 
+	// When start being able to delete stuff again, try to put this into
+	//	the model
 	destroy: function() {
 		self = this;
+		// See if can put this destroy at the end of this function instead
+		//	of here
 		self.model.destroy();
 
-		_.each(self.folderList, function(folder) {
+		_.each(self.model.children, function(folder) {
 			folder.destroy();
 		})
-		self.folderList = [];
+		self.model.children = [];
 	},
 
+	// When start being able to delete stuff again, try to put this into
+	//	the model
+	// Be able to put proper data in here
 	createOnEnter: function() {
 		self = this;
 
-		this.folders.create({
-			name: { first: "pppppp", last: 'qqqqq'},
-			email: "lksjdfklsd@slkdjfklsd.com",
-			repository_id: self.model.get('_id'),
-			url: "www.lkasjdf.com"
+		this.model.folders.create({
+			name: "pppppp",
+			owner_email: "lksjdfklsd@slkdjfklsd.com",
+			repository_id: self.model.id,
+			url: "https://github.com/rhintz42/software_visualizer"
 		})
 	},
 
+	// When start being able to delete stuff again, try to put this into
+	//	the model (Possibly, might make more sense todo the last line in here)
 	addFolder: function(folder) {
-		var view = new FolderView({
+		var folderView = new FolderView({
 			model: folder,
 			parent: this
 		});	
-		this.folderList.push(view);
-		this.$(".folder-list").append(view.render().el);
+		this.model.children.push(folderView);
+		this.$(".folder-list").append(folderView.render().el);
+
+		this.model.addToNodeDict(folderView);
+	},
+
+	toDict: function() {
+		return this.model.toDict();
+	},
+
+	_initializeListeners: function() {
+		this.listenTo(this.model.folders, 'add', this.addFolder);
+		this.listenTo(this.model, 'change', this.render);
+		this.listenTo(this.model, 'destroy', this.remove);
 	}
 });

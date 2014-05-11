@@ -21,11 +21,12 @@ var FolderView = Backbone.View.extend({
 		this.$el.html(this.template(this.model.toJSON()));
 		this.$el.toggleClass('done', this.model.get('done'));
 
-		this.$el.find('.name').append('<p>' + this.model.get('name')['first'] + '</p>');
+		this.$el.find('.name').append('<p>' + this.model.get('name') + '</p>');
 		this.$el.find('.id').append('<p>' + this.model.get('_id') + '</p>');
 		this.$el.find('.email').append('<p>' + this.model.get('email') + '</p>');
 		this.$el.find('.repository').append('<p>' + this.model.get('repository_id') + '</p>');
 		this.model.set('id', this.model.get('_id'));
+		this.model.set('hidden', false);
 		return this;
 	},
 
@@ -37,5 +38,9 @@ var FolderView = Backbone.View.extend({
 	destroy: function() {
 		self = this;
 		self.model.destroy();
+	},
+
+	toDict: function() {
+		return {id: this.model.get('_id'), name: 'Folder'};
 	}
 });

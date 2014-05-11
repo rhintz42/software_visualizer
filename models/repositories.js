@@ -3,14 +3,11 @@ var mongoose = require('mongoose'),
     ObjectId = Schema.ObjectId;
 
 var Repository = new Schema({
-    url:        { type: String },
-    name: {
-        first:  { type: String },
-        last:   { type: String }
-    },  
-    email:      { type: String },
-    phone:      { type: String },
-    gravatar:   { type: String }
+    url:        	{ type: String },
+    name:       	{ type: String },
+    owner_username: { type: String },
+    owner_email:    { type: String },
+    is_public: 		{ type: Boolean }
 });
 
 module.exports = { 

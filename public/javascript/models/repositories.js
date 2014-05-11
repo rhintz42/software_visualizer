@@ -1,24 +1,30 @@
 var Repository = Backbone.Model.extend({
+    initialize: function() {
+        this.set('id', this.get('_id'));
+        this.children = [];
 
-	url: function() {
-		var extra;
-
-		if(this.id) {
-			extra = encodeURIComponent(this.id);
-		} else {
-			extra = '';
-		}
-
-		return '/repositories/' + extra
+        this.folders = new FolderList;
+        this.folders.repository_id = this.id;
+        this.hidden = false;
     },
 
-    toggle: function() {
-      this.save({done: !this.get("done")});
-    }/*,
+    addToNodeDict: function(node) {
+        this.nodeDict[node.model.id] = node;
+    },
 
-    sync: function(method, model) {
-    	alert(method + ": " + JSON.stringify(model));
-    	model.set('id', 1);
+    toDict: function() {
+        var repDict = {
+            id: this.id,
+            name: this.name || 'Repository',
+            children: []
+        };
+
+        _.each(this.children, function(f) {
+            if(!f.model.hidden) {
+                repDict['children'].push(f.toDict());
+            }
+        })
+
+        return repDict;
     }
-    */
 });

@@ -4,10 +4,7 @@ var mongoose = require('mongoose'),
 
 var Folder = new Schema({
     url:            { type: String },
-    name: {
-        first:      { type: String },
-        last:       { type: String }
-    },  
+    name:           { type: String },
     email:          { type: String },
     phone:          { type: String },
     gravatar:       { type: String },
