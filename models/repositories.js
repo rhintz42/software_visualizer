@@ -2,6 +2,10 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
+/* 
+ * Think about adding these keys:
+ *  - hidden
+*/
 var Repository = new Schema({
     url:        	{ type: String },
     name:       	{ type: String },

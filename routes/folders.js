@@ -5,12 +5,11 @@ var router = express.Router();
 
 /* POST respositories listing. */
 router.post('/repositories/:rep_id/folders/', function(req, res) {
-//function create(req, res) {
 	var folder = new folders_model.Folder(req.body);
-	folder.save(function (err) {
+	folder.save(function (err, data) {
 		if (err)
 			res.send("Shit");
-		res.send(folder);
+		res.send(data);
 	});
 });
 
@@ -53,9 +52,6 @@ router.delete('/repositories/:rep_id/folders/:id', function(req, res) {
 
 /* GET respositories listing. */
 router.get('/repositories/:rep_id/folders', function(req, res) {
-	//folders_model.Folder.find({}, function(err, data){
-	//	res.json(data);
-	//})
 	folders_model.Folder.find({ repository_id: req.params.rep_id }, function(err, data){
 		res.json(data);
 	})

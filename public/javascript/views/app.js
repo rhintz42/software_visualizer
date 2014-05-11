@@ -81,8 +81,7 @@ $(function() {
 
 		createOnEnter: function(e) {
 	      	Repositories.create({
-	      		name: "wowie!", 
-	      		email: "asdf@slkdjf.com"
+	      		name: "wowie!"
 	      	});
 	    },
 	
@@ -104,16 +103,7 @@ $(function() {
 		  		});
 			}
 
-			/*
-			if(d.children) {
-				d._children = d.children;
-				d.children = null;
-			} else {
-				d.children = d._children;
-				d._children = null;
-			}
-			*/
-
+            // Should I just call `this.update(d)` instead?
 		  	this.trigger('clicked', d);
 		},
 

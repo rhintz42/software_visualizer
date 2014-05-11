@@ -3,12 +3,11 @@ var mongoose = require('mongoose'),
     ObjectId = Schema.ObjectId;
 
 var Folder = new Schema({
-    url:            { type: String },
+    hidden:         { type: String },
     name:           { type: String },
-    email:          { type: String },
-    phone:          { type: String },
-    gravatar:       { type: String },
-    repository_id:  { type: String }
+    owner_email:    { type: String },
+    repository_id:  { type: String },
+    url:            { type: String }
 });
 
 module.exports = { 

@@ -25,7 +25,7 @@ var RepositoryView = Backbone.View.extend({
 	},
 
 	edit: function() {
-		this.model.set('email', "hello");
+		this.model.set('name', "hello");
 		this.model.save();
 	},
 
