@@ -190,7 +190,7 @@ $(function() {
 		  // By doing it this way, it will set the source as the root and will
 		  //	set it as the left-most node way
 		  //var svgNodes = this.tree.nodes(source).reverse(),
-		  var svgNodes = this.tree.nodes(this.root).reverse(),
+		  var svgNodes = this.tree.nodes(this.root),//.reverse(),
 		      links = this.tree.links(svgNodes);
 
 		  // ---------- Get Source from svgNodes -------------------
