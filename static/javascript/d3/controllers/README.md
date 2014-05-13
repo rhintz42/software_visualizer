@@ -1,0 +1,1 @@
+This folder is meant to hold rendering and such for the d3 graphic engine.

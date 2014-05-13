@@ -13,9 +13,6 @@ var folders = require('./routes/folders');
 var app = express();
 
 var mongo = require('mongodb');
-//var mongoose = require('mongoose');
-//var db = mongoose.connect('localhost:27017/test');
-//Schema = mongoose.Schema;
 
 //connect to the db server:
 var mongoose = require('mongoose');
@@ -36,6 +33,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'static')));
 
 app.use('/', routes);
 //app.use('/users', users);

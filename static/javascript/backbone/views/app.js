@@ -23,14 +23,14 @@ $(function() {
 			self._initializeModel();
 			self._initializeListeners();
 
-			this.tree = d3.layout.tree()
-			    .size([self.model.height, self.model.width - 160]);
+			this.d3Visualizer = new VisualizerController(this,
+														 this.el, 
+														 self.model.width,
+														 self.model.height);
 
-			this.svg = d3.select(this.el).append("svg")
-			    .attr("width", self.model.width)
-			    .attr("height", self.model.height)
-			  .append("g")
-			    .attr("transform", "translate(40,0)");
+			this.svg = this.d3Visualizer.getSVG();
+
+			this.tree = this.d3Visualizer.getTree();
 
 			// Do this instead of async:false because it's the backbone way of
 			//	doing this
@@ -49,11 +49,11 @@ $(function() {
 			// TODO: Put this into another function, but should see where I
 			//	want to put creating of html elements. Possibly separate
 			//	into separate folder (Look at anweb to see what they do)
-			this.svg = d3.select(this.el).append("svg")
-			    .attr("width", this.model.width)
-			    .attr("height", this.model.height)
-			  .append("g")
-				.attr("transform", "translate(40,0)");
+
+			// Add different call for displaying. Should be something like
+			//	"addDisplay" or something
+			this.d3Visualizer.addSVG();
+			this.svg = this.d3Visualizer.getSVG();
 
 			// I don't think I need this, but keep here for now
 			d3.select(self.frameElement).style("height", this.model.height + "px");
@@ -62,6 +62,10 @@ $(function() {
 			this.update();
 
 			return this;
+		},
+
+		testMethod: function() {
+			alert('test!');
 		},
 
 		addOne: function(repository) {
@@ -81,11 +85,13 @@ $(function() {
 
 		createOnEnter: function(e) {
 	      	Repositories.create({
-	      		name: "wowie!"
+	      		name: "wowie!",
+	      		type_node: "repository"
 	      	});
 	    },
 	
 		click: function(d) {
+			/* Get Node */
 			var node = null;
 			if(d.id in this.model.nodeDict) {
 				node = this.model.nodeDict[d.id];
@@ -93,6 +99,20 @@ $(function() {
 				node = this;
 			}
 
+			/* Hide Node
+			node.model.hidden = true;
+			d = d.parent;
+			*/
+
+			/* Add Node to Parent */
+			node.createOnEnter();
+
+			//var repositoryView = new RepositoryView({model: repositoryModel});
+			//node.model.children.push(repositoryView);
+
+			//this.model.addToNodeDict(repositoryView);
+
+			/* Set all Children As Hidden
 			if(node.model.children) {
 		  		_.each(node.model.children, function(c) {
 		  			if(c.model.hidden) {
@@ -102,11 +122,14 @@ $(function() {
 		  			}
 		  		});
 			}
+			*/
 
             // Should I just call `this.update(d)` instead?
 		  	this.trigger('clicked', d);
 		},
 
+		/* source is the svgNode that you want to be the source of stuff,
+			this includes the location the animation starts */
 	    update: function(source) {
 	      var self = this;
 
@@ -190,7 +213,8 @@ $(function() {
 		      .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
 
 		  nodeUpdate.select("circle")
-		      .attr("r", 4.5)
+		      .attr("r", 10)
+		      //.attr("r", 4.5)
 		      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
 		  nodeUpdate.select("text")

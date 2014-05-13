@@ -7,11 +7,12 @@ var mongoose = require('mongoose'),
  *  - hidden
 */
 var Repository = new Schema({
-    url:        	{ type: String },
     name:       	{ type: String },
+    is_public: 		{ type: Boolean },
     owner_username: { type: String },
     owner_email:    { type: String },
-    is_public: 		{ type: Boolean }
+    type_node:      { type: String },
+    url:        	{ type: String }
 });
 
 module.exports = { 

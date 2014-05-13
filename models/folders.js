@@ -7,6 +7,7 @@ var Folder = new Schema({
     name:           { type: String },
     owner_email:    { type: String },
     repository_id:  { type: String },
+    type_node: 		{ type: String }, 
     url:            { type: String }
 });
 

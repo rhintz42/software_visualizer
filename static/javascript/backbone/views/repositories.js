@@ -53,6 +53,7 @@ var RepositoryView = Backbone.View.extend({
 			name: "pppppp",
 			owner_email: "lksjdfklsd@slkdjfklsd.com",
 			repository_id: self.model.id,
+			type_node: "folder",
 			url: "https://github.com/rhintz42/software_visualizer"
 		})
 	},
