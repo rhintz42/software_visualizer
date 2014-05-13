@@ -3,14 +3,14 @@ $(function() {
 		el: $("#repositoryapp"),
 
 		events: {
-			"click #new-repository": "createOnEnter",
-			"mouseup .node": "testMethod"		
+			"click #new-repository": "createOnEnter"//,
+			//"mouseup .node": "testMethod"		
 		},
 
 		model: AppModel,
 
 		_initializeListeners: function() {
-			this.listenTo(this, 'clicked', this.update);
+			//this.listenTo(this, 'clicked', this.update);
 			this.listenTo(Repositories, 'add', this.addOne);
 		},
 
@@ -36,6 +36,7 @@ $(function() {
 			//	doing this
 			Repositories.fetch({
 				success: function() {
+                    self.stopListening(Repositories);
 					self.render();
 				}
 			});
@@ -64,9 +65,10 @@ $(function() {
 			return this;
 		},
 
+        /*
 		testMethod: function(event, other) {
 			alert("Node ID: " + event.currentTarget.id.substring("node_id:".length));
-		},
+		},*/
 
 		addOne: function(repository) {
 			repository.nodeDict = this.model.nodeDict;
@@ -83,18 +85,23 @@ $(function() {
 			Repositories.each(this.addOne, this);
 		},
 
-		createOnEnter: function(e) {
+		createOnEnter: function(callback) {
+            var self = this;
 	      	Repositories.create({
 	      		name: "wowie!",
 	      		type_node: "repository"
-	      	});
+	      	}, {
+                success: function(event, data) {
+                    callback(event, data)
+                }
+            });
 	    },
 	
-		click: function(d) {
+		click: function(source) {
 			/* Get Node */
 			var node = null;
-			if(d.id in this.model.nodeDict) {
-				node = this.model.nodeDict[d.id];
+			if(source.id in this.model.nodeDict) {
+				node = this.model.nodeDict[source.id];
 			} else {
 				node = this;
 			}
@@ -105,7 +112,16 @@ $(function() {
 			*/
 
 			/* Add Node to Parent */
-			node.createOnEnter();
+			node.createOnEnter(function(source, event, data) {
+                if(data.type_node === "folder") {
+                    folder = new Folder(data);
+                    this.addFolder(folder)
+                } else {
+                    rep = new Repository(data);
+                    this.addOne(rep);
+                }
+                this.update(source);
+            }.bind(this, source));
 
 			//var repositoryView = new RepositoryView({model: repositoryModel});
 			//node.model.children.push(repositoryView);
@@ -125,8 +141,21 @@ $(function() {
 			*/
 
             // Should I just call `this.update(d)` instead?
-		  	this.trigger('clicked', d);
+		  	//this.trigger('clicked', d);
+
+            //this.update(source);
 		},
+
+        addFolder: function(folder) {
+            var folderView = new FolderView({
+                model: folder,
+                parent: this
+            });	
+            this.model.nodeDict[folder.get("repository_id")].model.children.push(folderView);
+            this.$(".folder-list").append(folderView.render().el);
+
+            this.model.addToNodeDict(folderView);
+        },
 
 		/* source is the svgNode that you want to be the source of stuff,
 			this includes the location the animation starts */
@@ -143,6 +172,7 @@ $(function() {
 	      //	only time we want to update the code is when we change
 	      //	something with a node, in which we want to call toDict(),
 	      //	then get the new source
+          
 		  self.root = self.toDict();
 
 		  self.root.x0 = 200 / 2;
@@ -160,7 +190,7 @@ $(function() {
 		  // By doing it this way, it will set the source as the root and will
 		  //	set it as the left-most node way
 		  //var svgNodes = this.tree.nodes(source).reverse(),
-		  var svgNodes = this.tree.nodes(this.root),
+		  var svgNodes = this.tree.nodes(this.root).reverse(),
 		      links = this.tree.links(svgNodes);
 
 		  // ---------- Get Source from svgNodes -------------------
@@ -168,6 +198,7 @@ $(function() {
 		  //	We need to get the new source node and set it's x0 and y0 values
 		  //	in order for the creating of nodes/links to stay fluid and not
 		  //	collapse/expand in random places
+          /*
 		  newSource = _.find(svgNodes, function(d) {
 		  	return d.id === source.id;
 		  });
@@ -177,6 +208,8 @@ $(function() {
 		  	newSource.y0 = source.y0;
 		  	source = newSource;
 		  }
+          */
+          
 		  // -------------------------------------------------------
 
 		  // Normalize for fixed-depth.

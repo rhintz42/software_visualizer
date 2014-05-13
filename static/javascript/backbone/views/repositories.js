@@ -46,7 +46,7 @@ var RepositoryView = Backbone.View.extend({
 	// When start being able to delete stuff again, try to put this into
 	//	the model
 	// Be able to put proper data in here
-	createOnEnter: function() {
+	createOnEnter: function(callback) {
 		self = this;
 
 		this.model.folders.create({
@@ -55,7 +55,14 @@ var RepositoryView = Backbone.View.extend({
 			repository_id: self.model.id,
 			type_node: "folder",
 			url: "https://github.com/rhintz42/software_visualizer"
-		})
+		}, {
+            success: function(event, data) {
+                callback(event, data);
+            }
+        })/*, {success: function(err, data) {
+            folder = new Folder(data);
+            self.addFolder(folder);
+        }})*/
 	},
 
 	// When start being able to delete stuff again, try to put this into
@@ -77,7 +84,6 @@ var RepositoryView = Backbone.View.extend({
 
 	_initializeListeners: function() {
 		this.listenTo(this.model.folders, 'add', this.addFolder);
-		this.listenTo(this.model, 'change', this.render);
 		this.listenTo(this.model, 'destroy', this.remove);
 	}
 });
