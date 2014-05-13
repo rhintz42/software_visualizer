@@ -3,7 +3,8 @@ $(function() {
 		el: $("#repositoryapp"),
 
 		events: {
-			"click #new-repository": "createOnEnter"
+			"click #new-repository": "createOnEnter",
+			"mouseup .node": "testMethod"		
 		},
 
 		model: AppModel,
@@ -23,8 +24,7 @@ $(function() {
 			self._initializeModel();
 			self._initializeListeners();
 
-			this.d3Visualizer = new VisualizerController(this,
-														 this.el, 
+			this.d3Visualizer = new VisualizerController(this.el, 
 														 self.model.width,
 														 self.model.height);
 
@@ -64,8 +64,8 @@ $(function() {
 			return this;
 		},
 
-		testMethod: function() {
-			alert('test!');
+		testMethod: function(event, other) {
+			alert("Node ID: " + event.currentTarget.id.substring("node_id:".length));
 		},
 
 		addOne: function(repository) {
@@ -191,6 +191,9 @@ $(function() {
 		  // Enter any new nodes at the parent's previous position.
 		  var nodeEnter = node.enter().append("g")
 		      .attr("class", "node")
+		      .attr("id", function(d) {
+		      	return "node_id:" + d.id;
+		      })
 		      .attr("transform", function(d) {
 		      	return "translate(" + source.y0 + "," + source.x0 + ")";
 		      })

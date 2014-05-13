@@ -1,14 +1,13 @@
 // Add things like changing the `el` to render into and such
 // TODO: Create VisualizerModel that will have all the properties
-var VisualizerController = function(parentAppView, el, width, height) {
-    this.parentAppView = parentAppView;
+var VisualizerController = function(el, width, height) {
     this.width = width;
     this.height = height;
     this.el = el;
 
     this.tree = d3.layout.tree()
                     .size([this.height, this.width - 160]);
-    this.addSVG();                
+    this.addSVG();
 }
 
 VisualizerController.prototype.addSVG = function() {
@@ -17,8 +16,6 @@ VisualizerController.prototype.addSVG = function() {
                     .attr("height", this.height)
                .append("g")
                     .attr("transform", "translate(40,0)");
-
-    this.parentAppView.trigger('shitCreated');
 }
 
 VisualizerController.prototype.getSVG = function() {
