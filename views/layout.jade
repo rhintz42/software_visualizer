@@ -3,9 +3,32 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/plugins/jsPlumb/css/jsplumb.css')
+    link(rel='stylesheet', href='//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css')
+    
     script(src="/plugins/jquery-2.1.1.js")
     script(src="/plugins/d3.js")
     script(src="/plugins/underscore.js")
     script(src="/plugins/backbone.js")
+
+    script(src="/plugins/jsPlumb/lib/jsBezier-0.6.js")
+    script(src="/plugins/jsPlumb/lib/mottle-0.2.js")
+    script(src="/plugins/jsPlumb/lib/biltong-0.2.js")
+    script(src="/plugins/jsPlumb/lib/katavorio-0.1.js")
+
+    script(src="/plugins/jsPlumb/src/util.js")
+    script(src="/plugins/jsPlumb/src/dom-adapter.js")
+    script(src="/plugins/jsPlumb/src/jsPlumb.js")
+    script(src="/plugins/jsPlumb/src/endpoint.js")
+    script(src="/plugins/jsPlumb/src/connection.js")
+    script(src="/plugins/jsPlumb/src/anchors.js")
+    script(src="/plugins/jsPlumb/src/defaults.js")
+    script(src="/plugins/jsPlumb/src/connectors-bezier.js")
+    script(src="/plugins/jsPlumb/src/connectors-statemachine.js")
+    script(src="/plugins/jsPlumb/src/connectors-flowchart.js")
+    script(src="/plugins/jsPlumb/src/connector-editors.js")
+    script(src="/plugins/jsPlumb/src/renderers-svg.js")
+    script(src="/plugins/jsPlumb/src/renderers-vml.js")
+    script(src="/plugins/jsPlumb/src/dom.jsPlumb.js")
   body
     block content
