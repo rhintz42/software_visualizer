@@ -20,6 +20,9 @@
     "mongodb": "~1.4.3",
     "mongoose": "~3.8.8",
     "nodemon": "~1.0.17",
-    "node-inspector": "~0.7.3"
+    "node-inspector": "~0.7.3"//,
+    //"jasmine-node": "",
+    //"sinon.js": "",
+    //"jsdom": ""
   }
 }
